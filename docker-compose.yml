@@ -1,0 +1,35 @@
+services:
+  php-app:
+    image: webdevops/php-nginx-dev:8.1
+    working_dir: /app
+    volumes:
+      - ./app:/app
+    environment:
+      WEB_DOCUMENT_ROOT: "/app/webroot"
+      DEBUG: "true"
+      SECURITY_SALT: "kd1fe#-g3_-?jJi@M))Gk#PK2=iMT1hm"
+      DATABASE_URL: "mysql://cakephp:AngelF00dC4k3~@mysql/cake_cms"
+      XDEBUG_CONFIG: "client_host=host.docker.internal"
+      XDEBUG_MODE: "develop,debug"
+      XDEBUG_SESSION: 1
+      PHP_IDE_CONFIG: "serverName=tutorial-cakephp"
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "t0p53Cr3T"
+      MYSQL_DATABASE: "cake_cms"
+      MYSQL_USER: "cakephp"
+      MYSQL_PASSWORD: "AngelF00dC4k3~"
+    command: mysqld --character-set-server=utf8 --init-connect='SET NAMES UTF8;'
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql-data:
+

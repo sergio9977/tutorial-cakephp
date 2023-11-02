@@ -46,6 +46,7 @@ class ArticlesController extends AppController
     {
         $article = $this->Articles->find()
             ->where(['slug' => $slug])
+            ->contain('Tags')
             ->firstOrFail();
         $this->set(compact('article'));
     }
@@ -73,7 +74,10 @@ class ArticlesController extends AppController
             }
             $this->Flash->error(__('Unable to add your article.'));
         }
-        $this->set('article', $article);
+
+        $tags = $this->Articles->Tags->find('list')->all();
+
+        $this->set(compact('article', 'tags'));
     }
 
     /**
@@ -86,6 +90,7 @@ class ArticlesController extends AppController
     {
         $article = $this->Articles->find()
             ->where(['slug' => $slug])
+            ->contain('Tags')
             ->firstOrFail();
 
         if (!$article instanceof EntityInterface) {
@@ -103,7 +108,9 @@ class ArticlesController extends AppController
             $this->Flash->error(__('Unable to update your article.'));
         }
 
-        $this->set('article', $article);
+        $tags = $this->Articles->Tags->find('list')->all();
+
+        $this->set(compact('article', 'tags'));
     }
 
     /**
@@ -126,5 +133,29 @@ class ArticlesController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
         }
+    }
+
+    /**
+     * Display articles tagged with specified tags.
+     *
+     * This method retrieves articles that are tagged with the specified tags and
+     * displays them in the view. The tags are extracted from the URL path segments.
+     *
+     * @return void
+     */
+    public function tags()
+    {
+        // The 'pass' key is provided by CakePHP and contains all
+        // the passed URL path segments in the request.
+        $tags = $this->request->getParam('pass');
+
+        // Use the ArticlesTable to find tagged articles.
+        $articles = $this->Articles->find('tagged', [
+            'tags' => $tags,
+        ])
+        ->all();
+
+        // Pass variables into the view template context.
+        $this->set(compact('articles', 'tags'));
     }
 }

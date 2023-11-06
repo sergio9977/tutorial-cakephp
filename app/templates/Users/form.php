@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
- * @var string $action 'add' o 'edit'
  */
 ?>
 <div class="row">

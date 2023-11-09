@@ -10,7 +10,7 @@
             $article->title,
             ['controller' => 'Articles', 'action' => 'view', $article->slug]
         ) ?></h4>
-        <span><?= h($article->created) ?></span>
+        <span><?= h($article->created->format(DateTimeInterface::ATOM)) ?></span>
     </article>
 <?php endforeach; ?>
 </section>

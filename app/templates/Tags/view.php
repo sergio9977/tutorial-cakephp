@@ -28,11 +28,11 @@
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($tag->created) ?></td>
+                    <td><?= h($tag->created->format(DateTimeInterface::ATOM)) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($tag->modified) ?></td>
+                    <td><?= h($tag->modified->format(DateTimeInterface::ATOM)) ?></td>
                 </tr>
             </table>
             <div class="related">

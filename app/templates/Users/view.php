@@ -28,11 +28,11 @@
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($user->created) ?></td>
+                    <td><?= h($user->created->format(DateTimeInterface::ATOM)) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($user->modified) ?></td>
+                    <td><?= h($user->modified->format(DateTimeInterface::ATOM)) ?></td>
                 </tr>
             </table>
             <div class="related">

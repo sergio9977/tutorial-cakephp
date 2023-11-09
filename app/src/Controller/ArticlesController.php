@@ -59,6 +59,7 @@ class ArticlesController extends AppController
     public function add()
     {
         $article = $this->Articles->newEmptyEntity();
+        $this->Authorization->authorize($article);
         if ($this->request->is('post')) {
             $article = $this->Articles->patchEntity($article, $this->request->getData());
 
@@ -93,13 +94,17 @@ class ArticlesController extends AppController
             ->contain('Tags')
             ->firstOrFail();
 
+        $this->Authorization->authorize($article);
         if (!$article instanceof EntityInterface) {
             $this->Flash->error(__('Article not found.'));
 
             return $this->redirect(['action' => 'index']);
         }
         if ($this->request->is(['post', 'put'])) {
-            $article = $this->Articles->patchEntity($article, $this->request->getData());
+            $this->Articles->patchEntity($article, $this->request->getData(), [
+                // Added: Disable modification of user_id.
+                'accessibleFields' => ['user_id' => false],
+            ]);
             if ($this->Articles->save($article)) {
                 $this->Flash->success(__('Your article has been updated.'));
 
@@ -125,6 +130,7 @@ class ArticlesController extends AppController
         $article = $this->Articles->find()
             ->where(['slug' => $slug])
             ->firstOrFail();
+        $this->Authorization->authorize($article);
         if ($article instanceof EntityInterface) {
             $articleTitle = $article->get('title');
             if ($this->Articles->delete($article)) {

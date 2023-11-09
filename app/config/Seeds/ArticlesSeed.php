@@ -1,13 +1,21 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractSeed;
+use Cake\Log\Log;
+use Phinx\Seed\AbstractSeed;
 
 /**
  * Articles seed.
  */
 class ArticlesSeed extends AbstractSeed
-{
+{ 
+    public function getDependencies(): array
+    {
+        return [
+            'UsersSeed',
+        ];
+    }
+
     /**
      * Run Method.
      *
@@ -20,10 +28,12 @@ class ArticlesSeed extends AbstractSeed
      */
     public function run(): void
     {
-        $data = [
+        // Define the data to insert
+        $title = 'First Post';
+        $articlesData = [
             [
                 'user_id' => 1,
-                'title' => 'First Post',
+                'title' => $title,
                 'slug' => 'first-post',
                 'body' => 'This is the first post.',
                 'published' => 1,
@@ -32,16 +42,15 @@ class ArticlesSeed extends AbstractSeed
             ],
         ];
 
-        $table = $this->table('articles');
+        // Check if data with the same title already exists
+        $existingData = $this->fetchRow("SELECT * FROM articles WHERE title = '".$title."'");
 
-        foreach ($data as $articleData) {
-            $existingArticle = $this->query("SELECT * FROM articles WHERE slug = :slug", ['slug' => $articleData['slug']])->fetch();
-    
-            if (!$existingArticle) {
-                $table->insert($articleData);
-            }
+        if (!$existingData) {
+            // Data doesn't exist, so insert it
+            $this->table('articles')->insert($articlesData)->save();
+        } else {
+            Log::write('warning', 'Article with title `{title}` already exists.', ['title' => $title]);
         }
-    
-        $table->saveData();
+        
     }
 }

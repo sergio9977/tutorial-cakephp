@@ -32,11 +32,11 @@
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($article->created) ?></td>
+                    <td><?= h($article->created->format(DateTimeInterface::ATOM)) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($article->modified) ?></td>
+                    <td><?= h($article->modified->format(DateTimeInterface::ATOM)) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Published') ?></th>

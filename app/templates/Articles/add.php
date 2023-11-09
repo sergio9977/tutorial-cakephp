@@ -17,7 +17,7 @@
             <fieldset>
                 <legend><?= __('Add Article') ?></legend>
                 <?php
-                    // @TODO: Update this when the authorizacion was implemented
+                    // TODO: Update this when the authorizacion was implemented
                     echo $this->Form->control('user_id', ['type' => 'hidden', 'value' => 1]);
                     echo $this->Form->control('title');
                     echo $this->Form->control('body');

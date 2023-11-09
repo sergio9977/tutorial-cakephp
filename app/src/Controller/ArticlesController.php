@@ -61,7 +61,7 @@ class ArticlesController extends AppController
         if ($this->request->is('post')) {
             $article = $this->Articles->patchEntity($article, $this->request->getData());
 
-            // @TODO: Hardcoding the user_id is temporary and will be removed later
+            // TODO: Hardcoding the user_id is temporary and will be removed later
             if (property_exists($article, 'user_id')) {
                 $article->user_id = 1;
             }

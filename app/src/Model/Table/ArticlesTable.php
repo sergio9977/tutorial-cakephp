@@ -51,9 +51,16 @@ class ArticlesTable extends Table
             ->minLength('title', 10)
             ->maxLength('title', 255)
             ->add('title', 'unique', [
-                'rule' => 'validateUnique',
-                'provider' => 'table',
-                'message' => 'The title is already in use. Must be unique.',
+                'rule' => function ($value, $context) {
+                    $conditions = [
+                        'slug' => substr(Text::slug($value), 0, 191),
+                    ];
+                    if ($context['newRecord'] === false) {
+                        $conditions['id !='] = $context['data']['id'];
+                    }
+
+                    return !$this->exists($conditions);
+                },
             ])
 
             ->notEmptyString('body')

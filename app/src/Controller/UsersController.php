@@ -9,7 +9,6 @@ use Cake\Event\EventInterface;
  * Users Controller
  *
  * @property \App\Model\Table\UsersTable $Users
- * @property \Authentication\AuthenticationService $Authentication
  * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class UsersController extends AppController
@@ -169,10 +168,7 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in
         if ($result && $result->isValid()) {
-            $this->Authentication->clearIdentity(
-                $this->request,
-                $this->response,
-            );
+            $this->Authentication->logout();
             $this->Flash->success(__('You have been logged out.'));
 
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);

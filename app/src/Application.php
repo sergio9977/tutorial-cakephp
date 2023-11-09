@@ -107,8 +107,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'httponly' => true,
             ]))
 
-            ->add(new RoutingMiddleware($this))
-            ->add(new BodyParserMiddleware())
             // Add the AuthenticationMiddleware. It should be after routing and body parser.
             ->add(new AuthenticationMiddleware($this));
 
